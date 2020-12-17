@@ -7,4 +7,4 @@ Afin de le lancer :
 - Update et installer le composer
 - Créer la DB et la migrer
 - Effectuer symfony server:start
-- Une fois sur le site, créer un compte et aller activer l'accès depuis ses mails
+- Une fois sur le site, créer un compte et aller activer l'accès depuis votre boite mail
