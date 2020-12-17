@@ -1,0 +1,33 @@
+{% extends 'layouts/layout.html.twig' %}
+{% import 'macros/advert-macros.html.twig' as advertElements %}
+{% block content %}
+    <section>
+        <div class="section-inner">
+            <h1 class="text-center mt-4 mb50"> Catégorie : {{ category.name }} </h1>
+            <div class="container">
+                <div class="row">
+                    {{ knp_pagination_sortable(advertsPage, 'Titre', 'a.title') }}
+                    {{ knp_pagination_sortable(advertsPage, 'Prix', 'a.price') }}
+                    {{ knp_pagination_sortable(advertsPage, 'Date', 'a.creationDate') }}
+                </div>
+
+                    {% for advert in advertsPage.items %}
+                        {% if loop.index0 % 3 == 0 %}
+                            <div class="row">
+                        {% endif %}
+                        {{ advertElements.advert_block(advert, 4) }}
+                        {% if loop.index0 % 3 == 2 or loop.last%}
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                <div class="row mb50 mt50">
+{#                    <div class="btn-group">#}
+                    {% for i in 1..(advertsPage.totalItemCount/advertsPage.itemNumberPerPage +1) | round(0, 'floor') %}
+                        <a href="{{ url(app.request.get('_route'), {'name': app.request.get('name'), 'page' : i })}}" class="page-link btn btn-sm btn-primary {{ i == app.request.get('page') ? 'current' : ''  }}">{{ i }}</a>
+                    {% endfor %}
+{#                    </div>#}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

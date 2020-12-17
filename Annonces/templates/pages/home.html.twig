@@ -1,0 +1,31 @@
+{% extends 'layouts/layout.html.twig'%}
+{% import 'macros/advert-macros.html.twig' as advertElements %}
+{% block header %}
+
+{% endblock header %}
+
+{% block content %}
+
+    <section>
+        <div class="section-inner">
+            <h1 class="text-center mt-4 mb50">Page d'accueil du site d'annonces de vélo</h1>
+
+            <div class="container">
+                <hr>
+                <div>
+                    <h2>Annonces récentes </h2>
+                </div>
+                {% for advert in adverts %}
+                    {% if loop.index0 % 3 == 0 %}
+                        <div class="row">
+                    {% endif %}
+                    {{ advertElements.advert_block(advert, 4) }}
+                    {% if loop.index0 % 3 == 2 or loop.last%}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

@@ -1,0 +1,13 @@
+{% set searchForm = search.generateForm() %}
+{% form_theme searchForm 'bootstrap_3_layout.html.twig' %}
+
+{{ form_start(searchForm) }}
+{{ form_row(searchForm.keyword) }}
+{{ form_row(searchForm.priceMin) }}
+{{ form_row(searchForm.priceMax) }}
+{{ form_row(searchForm.categories) }}
+{{ form_row(searchForm.tags) }}
+{{ form_widget(searchForm.search, {attr: {class: 'btn btn-white'}}) }}
+
+
+{{ form_end(searchForm) }}

@@ -1,0 +1,16 @@
+{% extends 'layouts/layout.html.twig' %}
+{% import 'macros/advert-macros.html.twig' as advertElements %}
+{% block content %}
+    <section>
+        <div class="section-inner">
+            <h1 class="text-center mt-4 mb50">Tag : {{ tag.name }} </h1>
+            <div class="container">
+                <div class="row mb50">
+                    {% for advert in adverts %}
+                        {{ advertElements.advert_block(advert) }}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

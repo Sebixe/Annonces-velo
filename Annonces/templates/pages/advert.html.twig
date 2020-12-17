@@ -1,0 +1,220 @@
+{% import 'macros/advert-macros.html.twig' as advertElements %}
+{% extends 'layouts/layout.html.twig' %}
+
+{% block header %}
+{#<section class="dark-wrapper opaqued parallax" data-parallax="scroll" data-image-src="assets/img/bg/bg2.jpg" data-speed="0.7">#}
+{#    <div class="section-inner pad-top-200">#}
+{#        <div class="container">#}
+{#            <div class="row">#}
+{#                <div class="col-lg-12 mt30 wow text-center">#}
+{#                    <h2 class="section-heading">VTT - Cross Country - Semi-rigide </h2>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#</section>#}
+{% endblock header %}
+{% block content %}
+<section>
+    <div class="section-inner">
+        <div class="container">
+            <div class="row mb50" >
+                <h1 class="mt0"> {{advert.title}}</h1>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 mb50">
+                            <div class="images">
+{#                                    <span class="onsale">Sale!</span>#}
+                            {% for photo in advert.gallery.photos %}
+
+                                {% if loop.index0 == 1 %} {# Si on est au début du deuxieme tour de boucle #}
+                                <div class="thumbnails mt">
+                                {% endif %}
+
+                                {% if loop.first %}
+                                {{ advertElements.advert_image_link(photo.url) }}
+                                {% else %}
+                                {{ advertElements.advert_image_link_thumb(photo.url) }}
+                                {% endif %}
+
+                                {% if loop.last and loop.index0 > 0 %} {# Si on est dans le dernier tour de boucle (et qu'on a fait plus d'un tour) #}
+                                </div>
+                                {% endif %}
+
+                            {% endfor %}
+
+
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 mb50">
+                            <div class="summary entry-summary">
+
+                                <div>
+                                    <p class="price">
+{#                                            <del><span class="amount">£3.00</span>#}
+{#                                            </del>#}
+                                        <ins><span class="amount">{{advert.price}} €</span></ins>                                        </ins>
+                                    </p>
+                                </div>
+
+                                <div class="lead">
+                                    <p>{{ advert.description }}</p>
+                                </div>
+                                <div class="tagList">
+                                    {% for tag in advert.tags %}
+                                        <a href="{{ url('showByTag', {name: tag.name}) }}" class="btn btn-secondary">{{ tag.name }}</a>
+                                    {% endfor %}
+                                </div>
+                                {% if advert.createdBy == app.user %}
+                                <div>
+                                    <a href="{{ url('accountEditAdvert', {id: advert.id}) }}" class="btn btn-primary"> Éditer </a>
+                                </div>
+                                {% endif %}
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 product-tabs mt">
+                            <ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a data-toggle="tab" href="#tab-reviews">Questions ({{ advert.questions | length }})</a>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content mb">
+
+                                <div class="tab-pane active" id="tab-reviews">
+                                    <div id="reviews">
+                                        <div id="comments">
+                                            <div id="comments-list" data-answer-form='{{ form(answerForm) }}'  class="gap">
+                                                <div class="media">
+                                                    {% for question in advert.questions %}
+{#                                                    <div class="pull-left">#}
+{#                                                        <img class="avatar comment-avatar" src="http://lorempixel.com/80/80/people/9" alt="">#}
+{#                                                    </div>#}
+                                                    <div class="media-body" data-id="{{ question.id }}">
+                                                        <div class="well">
+                                                            <div class="media-heading">
+                                                                {% if app.user == advert.createdBy %}<strong>{{ question.createdBy.email }}</strong>{% endif %}&nbsp; <small>{{ question.creationDate | date }}</small>
+                                                            </div>
+                                                            <p>{{ question.content |nl2br }}</p>
+                                                            {% for answer in question.answers %}
+                                                                {% include 'pages/element/answer.html.twig' %}
+                                                            {% endfor %}
+                                                            {% if app.user == advert.createdBy %}
+                                                                <p><a class="responseCall" href="#">Répondre</a></p>
+                                                            {% endif %}
+                                                        </div>
+
+                                                    </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                            {% if app.user != advert.createdBy %}
+                                            <div id="comment-form" class="gap">
+                                                <div class="mb">
+                                                    <h3 class="single-section-title">Poser une question</h3>
+                                                </div>
+                                                {% if app.user %}
+                                                {{ form_start(form) }}
+                                                {{ form_widget(form.content) }}
+                                                {{ form_widget(form.submit) }}
+                                                {{ form_rest(form) }}
+                                                {% else %}
+                                                    <a href="{{ url("app_login") }}">Log in</a> or <a href="{{ url("register") }}">register</a> to ask a question.
+                                                {% endif %}
+
+                                            </div>
+                                            {% endif %}
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="main-sidebar" class="col-md-3 col-md-offset-1 divider-wrapper wow fadeIn" data-wow-delay="0.5s">
+                    <div>
+                        <div class="widget">
+                            {#                                <h4 class="widget-title"><strong>Latest</strong> Products</h4>#}
+                            <div>
+                                <dl>
+                                    <dt>
+                                        Année
+                                    </dt>
+                                    <dd>
+                                        {{ advert.year | date('Y') }}
+                                    </dd>
+                                    <dt>
+                                        Categorie
+                                    </dt>
+                                    <dd>
+                                        {{ advert.category ? advert.category: '-' }}
+                                        <a href="{{ url('showByCategory', {name: advert.category.name}) }}"></a>
+                                    </dd>
+                                    <dt>
+                                        Fourche
+                                    </dt>
+                                    <dd>
+                                        {{ advert.fork ? advert.fork : '-'  }}
+                                    </dd>
+
+
+
+
+                                </dl>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+    $('.responseCall').click((e) => {
+        e.preventDefault();
+
+        let caller = $(e.target);
+        if (caller.parent().prev('form').length) {
+            caller.parent().prev('form').submit();
+        }
+        else {
+            // remove other forms
+            $('form[name="answer"]').remove();
+
+            let form = $($('#comments-list').data('answer-form'));
+            form.find('.col-sm-2').hide();
+
+            form.find('select').val(caller.parents('.media-body').data('id'));
+            $(e.target).parent('p').before(form);
+
+            form.submit((e) => {
+                e.preventDefault();
+                $.post(
+                    form.attr('action'),
+                    form.serialize(),
+                    function(data){
+                        form.before(data);
+                        form.remove();
+                    }
+                );
+            })
+        }
+
+    });
+</script>
+
+{% endblock %}
