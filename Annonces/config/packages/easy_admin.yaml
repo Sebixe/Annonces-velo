@@ -1,0 +1,9 @@
+easy_admin:
+    entities:
+        # List the entity class name you want to manage
+        - App\Entity\Advert
+        - App\Entity\Category
+        - App\Entity\Photo
+        - App\Entity\PhotoGallery
+        - App\Entity\Tag
+        - App\Entity\User
